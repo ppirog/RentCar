@@ -22,14 +22,16 @@ public class Main {
 
                     System.out.println("Podaj login");
                     String login = reader.readLine();
+
                     System.out.println("Podaj hasło");
                     String keyPassword = Hasher.hashPassword(reader.readLine());
 
                     if (Authentication.verify(login, keyPassword, userRepository)) {
                         currentUser = userRepository.getUser(login);
+                        System.out.println("Zalogowano jako " + currentUser.login() + " rola: " + currentUser.role());
                         break;
                     }
-                    System.out.println("Błędne dane logowania");
+                    System.out.println("Błędne dane, spróbuj ponownie");
                 }
 
 
@@ -61,9 +63,6 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Błąd");
         }
-
-        assert currentUser != null;
-        System.out.println("Zalogowano jako " + currentUser.login() + " rola: " + currentUser.role());
 
         CarManager carManager = new CarManager();
 
@@ -151,7 +150,7 @@ public class Main {
                     userRepository.getAllUsers()
                             .forEach(user -> System.out.println(user.login()));
 
-                } else if (choice.equals("exit".toLowerCase())) {
+                } else if (choice.equalsIgnoreCase("exit")) {
                     System.out.println("Wylogowano");
                     break;
                 }
