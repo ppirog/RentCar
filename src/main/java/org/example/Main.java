@@ -77,6 +77,7 @@ public class Main {
                 System.out.println("4. Usuń samochód");
                 System.out.println("5. Wyświetl wszystkich userów");
             }
+            System.out.println("exit. Wyloguj");
 
             try {
                 String choice = reader.readLine().trim();
@@ -150,6 +151,9 @@ public class Main {
                     userRepository.getAllUsers()
                             .forEach(user -> System.out.println(user.login()));
 
+                } else if (choice.equals("exit".toLowerCase())) {
+                    System.out.println("Wylogowano");
+                    break;
                 }
 
                 Thread.sleep(1000);
