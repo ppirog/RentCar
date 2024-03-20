@@ -2,6 +2,7 @@ package org.example;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class Main {
 
@@ -71,7 +72,7 @@ public class Main {
             System.out.println("1. Wypożycz samochód");
             System.out.println("2. Oddaj samochód");
 
-            if (currentUser.role().equals("admin")) {
+            if (Objects.requireNonNull(currentUser).role().equals("admin")) {
                 System.out.println("3. Dodaj samochód");
                 System.out.println("4. Usuń samochód");
                 System.out.println("5. Wyświetl wszystkich userów");
