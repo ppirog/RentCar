@@ -8,19 +8,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-class CarManager implements VehicleRepository {
+class CarManager implements VehicleRepository{
 
-    private final String PATH = "/home/ppirog/IdeaProjects/RentCar/src/main/resources/db.txt";
-    private final File plikCSV = new File(PATH);
+    private final String DB_PATH = "/home/ppirog/IdeaProjects/RentCar/src/main/resources/db.txt";
+    private final File plikCSV = new File(DB_PATH);
     private final Map<String, Vehicle> vehicles = new HashMap<>();
 
 
+
     @Override
-    public void rentCar(final String registrationNumber) {
-        readFromCsv();
+    public void rentCar(final String registrationNumber, final String user) {
+        readCarFromCsv();
         Vehicle vehicle = vehicles.get(registrationNumber);
         if (vehicle != null && !vehicle.isRented()) {
             vehicle.setRented(true);
+            vehicle.setRentedBy(user);
             vehicles.put(registrationNumber, vehicle);
             System.out.println("Samochód został wypożyczony");
         } else {
@@ -31,10 +33,11 @@ class CarManager implements VehicleRepository {
 
     @Override
     public void returnCar(final String registrationNumber) {
-        readFromCsv();
+        readCarFromCsv();
         Vehicle vehicle = vehicles.get(registrationNumber);
         if (vehicle != null && vehicle.isRented()) {
             vehicle.setRented(false);
+            vehicle.setRentedBy("-1");
             vehicles.put(registrationNumber, vehicle);
             System.out.println("Samochód został zwrócony");
         } else {
@@ -69,7 +72,7 @@ class CarManager implements VehicleRepository {
         }
     }
 
-    private void readFromCsv() {
+    private void readCarFromCsv() {
 
         try (Scanner scanner = new Scanner(plikCSV)) {
             while (scanner.hasNextLine()) {
@@ -81,6 +84,11 @@ class CarManager implements VehicleRepository {
         } catch (FileNotFoundException e) {
             System.err.println("Plik CSV nie został znaleziony: " + e.getMessage());
         }
-
     }
+
+
+
+
+
+
 }

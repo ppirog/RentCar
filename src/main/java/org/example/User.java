@@ -4,6 +4,7 @@ import lombok.Builder;
 
 @Builder
 record User(
+
         String login,
         String password,
         String role
