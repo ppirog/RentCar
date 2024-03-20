@@ -1,0 +1,5 @@
+Car,12,Audi,A4,2010,100,true
+34,Yamaha,R1,2015,50,false,Sport
+56,Kawasaki,Ninja,2018,75,false,Cruiser
+Car,78,BMW,3 Series,2012,150,false
+Car,90,Toyota,Corolla,2015,100,false
