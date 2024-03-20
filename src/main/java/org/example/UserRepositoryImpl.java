@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class UserRepositoryImpl implements UserRepository {
@@ -31,7 +32,6 @@ class UserRepositoryImpl implements UserRepository {
     public void addUser(final User user) {
         users.put(user.login(), user);
 
-        // save to csv
         try (FileWriter writer = new FileWriter(plikCSV)) {
             for (User u : users.values()) {
                 writer.append(u.login())
@@ -54,5 +54,10 @@ class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean exists(final String surname) {
         return users.containsKey(surname);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return users.values().stream().toList();
     }
 }

@@ -11,4 +11,5 @@ class VehicleFactory {
             default -> throw new IllegalStateException("Unexpected value: " + vehicleData[0]);
         };
     }
+
 }

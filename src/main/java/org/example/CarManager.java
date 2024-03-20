@@ -14,6 +14,9 @@ class CarManager implements VehicleRepository{
     private final File plikCSV = new File(DB_PATH);
     private final Map<String, Vehicle> vehicles = new HashMap<>();
 
+    CarManager(){
+        readCarFromCsv();
+    }
 
 
     @Override
@@ -36,6 +39,7 @@ class CarManager implements VehicleRepository{
         readCarFromCsv();
         Vehicle vehicle = vehicles.get(registrationNumber);
         if (vehicle != null && vehicle.isRented()) {
+
             vehicle.setRented(false);
             vehicle.setRentedBy("-1");
             vehicles.put(registrationNumber, vehicle);
@@ -55,6 +59,11 @@ class CarManager implements VehicleRepository{
         final Vehicle put = vehicles.put(vehicle.getRegistrationNumber(), vehicle);
         saveToCsv();
         return put;
+    }
+
+    public void removeFromDatabase(final String registrationNumber) {
+        vehicles.remove(registrationNumber);
+        saveToCsv();
     }
 
     @Override
