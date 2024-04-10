@@ -1,2 +1,2 @@
-Car,12,BMW,520,2019,190,false,-1
+Car,12,BMW,520,2019,190,true,asd
 Motorcycle,3,Kawasaki,ab,2020,170,false,-1,A1

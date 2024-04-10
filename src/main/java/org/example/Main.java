@@ -13,7 +13,10 @@ public class Main {
         System.out.println("L - logowanie \nR - rejestracja");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        UserRepository userRepository = new UserRepositoryImpl();
+        IUserRepository userRepository = new JdbcUserRepository();
+        IVehicleRepository carManager = new JdbcVehicleRepository();
+//      przed użyciem trzeba utworzyć baze danych taką jaka jest w skrypcie create_table.sql
+
         try {
             String choice = reader.readLine().trim();
 
@@ -59,13 +62,27 @@ public class Main {
                         .build();
 
                 userRepository.addUser(user);
-                currentUser = user;
+
+                while (true) {
+
+                    System.out.println("Podaj login");
+                    String login2 = reader.readLine();
+
+                    System.out.println("Podaj hasło");
+                    String keyPassword = Hasher.hashPassword(reader.readLine());
+
+                    if (Authentication.verify(login2, keyPassword, userRepository)) {
+                        currentUser = userRepository.getUser(login2);
+                        System.out.println("Zalogowano jako " + currentUser.login() + " rola: " + currentUser.role());
+                        break;
+                    }
+                    System.out.println("Błędne dane, spróbuj ponownie");
+                }
             }
         } catch (Exception e) {
             System.out.println("Błąd");
         }
 
-        CarManager carManager = new CarManager();
 
         while (true) {
 
@@ -86,13 +103,13 @@ public class Main {
 
                     System.out.println("Podaj numer rejestracyjny samochodu");
                     String registrationNumber = reader.readLine();
-                    carManager.rentCar(registrationNumber, currentUser.login());
+                    carManager.rentVehicle(registrationNumber, currentUser.login());
 
                 } else if (choice.equals("2")) {
 
                     System.out.println("Podaj numer rejestracyjny samochodu");
                     String registrationNumber = reader.readLine();
-                    carManager.returnCar(registrationNumber);
+                    carManager.returnVehicle(registrationNumber);
 
                 } else if (choice.equals("3") && currentUser.role().equals("admin")) {
 
@@ -132,7 +149,7 @@ public class Main {
                         toAdd = new Motorcycle(registrationNumber, brand, model, year, price, false, rentedBy, category);
                     }
 
-                    carManager.addToDatabase(toAdd);
+                    carManager.addVehicle(toAdd);
 
                 } else if (choice.equals("4") && currentUser.role().equals("admin")) {
 
@@ -142,13 +159,13 @@ public class Main {
                     if (carManager.getVehicle(registrationNumber).isRented) {
                         System.out.println("Samochód jest wypożyczony. Chwilowo nie można usunąć go z bazy.");
                     } else {
-                        carManager.removeFromDatabase(registrationNumber);
+                        carManager.removeVehicle(registrationNumber);
                     }
 
                 } else if (choice.equals("5") && currentUser.role().equals("admin")) {
 
                     System.out.println("Lista userów: ");
-                    userRepository.getAllUsers()
+                    userRepository.getUsers()
                             .forEach(user -> System.out.println(user.login()));
 
                 } else if (choice.equalsIgnoreCase("exit")) {

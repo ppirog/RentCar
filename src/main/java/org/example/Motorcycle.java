@@ -1,5 +1,8 @@
 package org.example;
 
+import lombok.Getter;
+
+@Getter
 class Motorcycle extends Vehicle {
     private String category;
 
