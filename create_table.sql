@@ -6,7 +6,7 @@ create table tvehicle
     year               int         not null,
     price              int         not null,
     isRented           boolean     not null,
-    rentedBy           int,
+        rentedBy           int,
     category           varchar(50) not null
 );
 
@@ -16,3 +16,4 @@ create table tuser
     password varchar(200) not null,
     role     varchar(200) not null
 );
+ALTER TABLE tvehicle ALTER COLUMN rentedBy TYPE VARCHAR;

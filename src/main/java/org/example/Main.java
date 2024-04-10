@@ -1,5 +1,9 @@
 package org.example;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Objects;
@@ -7,14 +11,20 @@ import java.util.Objects;
 public class Main {
 
     public static void main(String[] args) {
+        Configuration configuration = new Configuration();
+        configuration.configure(); // Domyslna konfiguracja z pliku hibernate.cfg.xml
+
+        // Tworzenie fabryki sesji na podstawie konfiguracji
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
+
 
         User currentUser = null;
 
         System.out.println("L - logowanie \nR - rejestracja");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        IUserRepository userRepository = new JdbcUserRepository();
-        IVehicleRepository carManager = new JdbcVehicleRepository();
+        IUserRepository userRepository = new HibernateUserRepository(sessionFactory);//new HibernateUserRepository(session
+        IVehicleRepository carManager = new HibernateVehicleRepository(sessionFactory);//new HibernateVehicleRepository(session);
 //      przed użyciem trzeba utworzyć baze danych taką jaka jest w skrypcie create_table.sql
 
         try {
